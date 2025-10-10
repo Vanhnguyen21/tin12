@@ -13,16 +13,31 @@
     <div class="falling-flowers"></div>
 
     <div class="card">
-        
         <h1>Chúc Mừng Ngày Phụ Nữ Việt Nam</h1>
         <h2>20/10</h2>
         
         <p class="message">
             Nhân ngày 20/10 chúc bạn Tú và bạn Hằng có một ngày lễ vui vẻ, chúc hai bạn ngày càng xinh gái, vui vẻ, hạnh phúc và đạt được mục tiêu đã đề ra🌺🌺
         </p>
+
+        <div id="giftBox">
+            🎁 Bấm vào để mở quà!
+        </div>
         
         <p class="signature">From Vanh with love!</p>
     </div>
+
+    <div id="modalOverlay">
+        <div id="giftModal">
+            <span id="closeModal">&times;</span>
+            <h2>Một món quà đặc biệt!</h2>
+            <p>Chúc hai bạn luôn là những đóa hoa rạng rỡ, tỏa ngát hương thơm và tràn đầy sức sống. Cảm ơn vì đã luôn ở đây và làm cho mọi thứ xung quanh mình trở nên tốt đẹp hơn.</p>
+            <p class="modal-signature">Love u!</p>
+        </div>
+    </div>
+
+    <audio id="backgroundMusic" src="nhac-nen.mp3" loop></audio>
+    <button id="playMusicBtn">▶️</button>
 
     <script src="script.js"></script>
 </body>
