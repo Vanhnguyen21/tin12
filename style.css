@@ -204,3 +204,13 @@ h2 {
         opacity: 0;
     }
 }
+
+/* --- MỚI: CSS cho hiệu ứng Hello Kitty rơi --- */
+.falling-kitty {
+    position: absolute;
+    top: -150px; /* Bắt đầu từ vị trí cao hơn để ảnh không xuất hiện đột ngột */
+    height: auto;
+    user-select: none;
+    animation: fall linear infinite;
+    transform-origin: center center;
+}
