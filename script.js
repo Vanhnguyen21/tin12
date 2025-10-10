@@ -1,24 +1,213 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const container = document.querySelector('.falling-flowers');
-    const numberOfFlowers = 60; // Tăng số lượng hoa cho dày hơn
+/* Import font chữ nghệ thuật */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600&display=swap');
 
-    // Thêm nhiều loại hoa, đặc biệt là hoa hồng
-    const flowerTypes = ['🌹', '🌸', '🌷', '🌺', '💐']; 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    for (let i = 0; i < numberOfFlowers; i++) {
-        const flower = document.createElement('div');
-        flower.classList.add('flower');
-        
-        // Lấy ngẫu nhiên một loại hoa từ danh sách
-        flower.innerHTML = flowerTypes[Math.floor(Math.random() * flowerTypes.length)];
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    overflow: hidden; /* Ẩn thanh cuộn để hiệu ứng hoa rơi đẹp hơn */
+    position: relative;
+}
 
-        // Vị trí, tốc độ và thời gian bắt đầu rơi ngẫu nhiên
-        flower.style.left = `${Math.random() * 100}vw`;
-        flower.style.animationDuration = `${Math.random() * 5 + 8}s`; // Rơi trong 8-13 giây
-        flower.style.animationDelay = `${Math.random() * 7}s`;
-        flower.style.fontSize = `${Math.random() * 18 + 12}px`; // Kích thước ngẫu nhiên
-        flower.style.opacity = Math.random() * 0.7 + 0.3; // Độ trong suốt ngẫu nhiên (từ 0.3 đến 1.0)
+.card {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    padding: 40px;
+    max-width: 600px;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    /* 2. Thêm hiệu ứng xuất hiện cho tấm thiệp */
+    opacity: 0; /* Bắt đầu ẩn đi */
+    transform: translateY(30px); /* Bắt đầu ở vị trí thấp hơn một chút */
+    animation: fadeInUp 1s ease-out 0.5s forwards; /* Animation: tên, thời gian, hiệu ứng, độ trễ, giữ trạng thái cuối */
+}
 
-        container.appendChild(flower);
+/* Định nghĩa animation cho hiệu ứng xuất hiện */
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
-});
+}
+
+.main-image {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3em;
+    color: #d63384; /* Màu hồng đậm */
+    margin-bottom: 0;
+}
+
+h2 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5em;
+    color: #e85a9b;
+    margin-bottom: 25px;
+}
+
+.message {
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.signature {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.8em;
+    color: #d63384;
+    margin-top: 30px;
+}
+
+/* 4. CSS cho hộp quà bí mật */
+#giftBox {
+    background-color: #ff758f;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    display: inline-block;
+    margin-top: 20px;
+    font-weight: bold;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+#giftBox:hover {
+    background-color: #ff4d6d;
+    transform: scale(1.05);
+}
+
+#modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: none; /* Mặc định ẩn đi */
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+#giftModal {
+    background: white;
+    padding: 30px 40px;
+    border-radius: 15px;
+    max-width: 500px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    animation: zoomIn 0.5s ease-out;
+}
+
+#closeModal {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 2em;
+    color: #aaa;
+    cursor: pointer;
+    line-height: 1;
+}
+
+#closeModal:hover {
+    color: #333;
+}
+
+.modal-signature {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.5em;
+    color: #d63384;
+    margin-top: 20px;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+/* 3. CSS cho nút nhạc nền */
+#playMusicBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 105, 180, 0.8);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.5em;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 99;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+#playMusicBtn:hover {
+    background-color: rgba(214, 51, 132, 1);
+    transform: scale(1.1);
+}
+
+
+/* Hiệu ứng hoa rơi (Giữ nguyên) */
+.falling-flowers {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.flower {
+    position: absolute;
+    top: -50px;
+    font-size: 20px;
+    color: white;
+    user-select: none;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    from {
+        transform: translateY(0) rotate(0);
+    }
+    to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
