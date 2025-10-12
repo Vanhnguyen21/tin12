@@ -9,6 +9,7 @@
 
 body {
     font-family: 'Montserrat', sans-serif;
+    /* Giữ lại màu nền chính của trang web ở đây */
     background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
     display: flex;
     justify-content: center;
@@ -27,7 +28,7 @@ body {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 1; /* Hiệu ứng nằm ở lớp nền sau cùng */
+    z-index: 1; /* Hiệu ứng nằm ở lớp nền, ngay trên body */
 }
 
 /* Màn hình chờ và bức thư */
@@ -37,12 +38,12 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+    /* SỬA LỖI QUAN TRỌNG: Xóa nền của màn hình chờ để nó trong suốt */
+    /* background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%); */
     z-index: 100; /* Nội dung nằm trên lớp hiệu ứng */
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: background-color 1s ease-in-out 0.5s;
 }
 
 .envelope-wrapper {
@@ -83,7 +84,6 @@ body {
 
 /* Tấm thiệp lời chúc */
 .card {
-    /* SỬA LỖI QUAN TRỌNG: Chuyển từ relative sang absolute */
     position: absolute;
     z-index: 10;
     opacity: 0;
@@ -112,7 +112,7 @@ body {
     pointer-events: auto;
 }
 #introScreen.opened {
-    background-color: transparent;
+    /* Lớp introScreen bây giờ không cần thay đổi gì thêm khi mở */
     pointer-events: none;
 }
 #introScreen.opened .card,
@@ -139,7 +139,7 @@ h2 { font-family: 'Dancing Script', cursive; font-size: 2.5em; color: #e85a9b; m
     display: none; 
     justify-content: center; 
     align-items: center; 
-    z-index: 200; /* Hộp quà phải có z-index cao nhất để hiện trên mọi thứ */
+    z-index: 200; /* Hộp quà phải có z-index cao nhất */
 }
 #giftModal { background: white; padding: 30px 40px; border-radius: 15px; max-width: 500px; text-align: center; position: relative; box-shadow: 0 5px 20px rgba(0,0,0,0.2); animation: zoomIn 0.5s ease-out; }
 #closeModal { position: absolute; top: 10px; right: 15px; font-size: 2em; color: #aaa; cursor: pointer; line-height: 1; }
