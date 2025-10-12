@@ -19,7 +19,18 @@ body {
     position: relative;
 }
 
-/* --- MỚI: CSS cho màn hình mở đầu và bức thư --- */
+/* Lớp hiệu ứng rơi */
+.falling-flowers {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1; /* Hiệu ứng nằm ở lớp nền sau cùng */
+}
+
+/* Màn hình chờ và bức thư */
 #introScreen {
     position: fixed;
     top: 0;
@@ -27,18 +38,20 @@ body {
     width: 100%;
     height: 100%;
     background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
-    z-index: 200;
+    z-index: 100; /* Nội dung nằm trên lớp hiệu ứng */
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: opacity 1s ease-in-out, visibility 1s;
+    transition: background-color 1s ease-in-out 0.5s;
 }
 
-#introScreen.hidden {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
+.envelope-wrapper {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 }
 
 .instruction {
@@ -47,12 +60,9 @@ body {
     font-size: 2em;
     margin-top: 30px;
     text-shadow: 1px 1px 5px rgba(0,0,0,0.2);
-    animation: fadeIn 2s ease-in;
-}
-
-.envelope-wrapper {
-    position: relative;
-    cursor: pointer;
+    transition: opacity 0.5s ease-out;
+    width: 100%;      /* Sửa lỗi lệch chữ trên điện thoại */
+    text-align: center; /* Sửa lỗi lệch chữ trên điện thoại */
 }
 
 .envelope {
@@ -64,123 +74,89 @@ body {
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     transition: transform 0.5s;
 }
-
-.flap {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: #f7d9d9;
-    border-radius: 10px;
-}
-
-.flap.top {
-    border-top: 90px solid #f2caca;
-    border-left: 140px solid transparent;
-    border-right: 140px solid transparent;
-    top: 0;
-    transform-origin: top;
-    transition: transform 0.7s ease-in-out;
-}
-
-.flap.front {
-    border-top: 90px solid transparent;
-    border-left: 140px solid #f7d9d9;
-    border-right: 140px solid #f7d9d9;
-    bottom: 0;
-}
-
-.letter {
-    position: absolute;
-    top: 0;
-    left: 5%;
-    width: 90%;
-    height: 95%;
-    background-color: white;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    transition: transform 0.7s ease-in-out;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.heart {
-    width: 30px;
-    height: 30px;
-    background-color: #ff4d6d;
-    position: relative;
-    transform: rotate(-45deg);
-}
-.heart:before, .heart:after {
-    content: "";
-    width: 30px;
-    height: 30px;
-    background-color: #ff4d6d;
-    border-radius: 50%;
-    position: absolute;
-}
-.heart:before { top: -15px; left: 0; }
-.heart:after { top: 0; left: 15px; }
-
-/* Hiệu ứng khi mở thư */
 .envelope-wrapper:hover .envelope {
     transform: translateY(-10px);
 }
+.flap { position: absolute; width: 100%; height: 100%; background-color: #f7d9d9; border-radius: 10px; }
+.flap.top { border-top: 90px solid #f2caca; border-left: 140px solid transparent; border-right: 140px solid transparent; top: 0; }
+.flap.front { border-top: 90px solid transparent; border-left: 140px solid #f7d9d9; border-right: 140px solid #f7d9d9; bottom: 0; }
 
-.envelope.open .flap.top {
-    transform: rotateX(180deg);
-}
-
-.envelope.open .letter {
-    transform: translateY(-120px);
-}
-/* --- Kết thúc CSS mới --- */
-
-
+/* Tấm thiệp lời chúc */
 .card {
+    position: relative;
+    z-index: 10;
+    opacity: 0;
+    transform: scale(0.2);
+    pointer-events: none;
+    transition: transform 1s ease-in-out, opacity 1s ease-in-out;
     background: rgba(255, 255, 255, 0.9);
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     padding: 40px;
     max-width: 600px;
     text-align: center;
-    position: relative;
-    z-index: 10;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Các thay đổi khi màn hình mở đầu có class 'opened' */
+#introScreen.opened .envelope-wrapper {
     opacity: 0;
-    transform: translateY(30px);
-    /* Sửa animation-delay để nó xuất hiện sau khi màn intro biến mất */
-    animation: fadeInUp 1s ease-out 1s forwards;
+    transform: scale(0.5);
+    pointer-events: none;
+}
+#introScreen.opened .card {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+#introScreen.opened {
+    background-color: transparent;
+    pointer-events: none;
+}
+#introScreen.opened .card,
+#introScreen.opened #modalOverlay {
+    pointer-events: auto;
 }
 
-@keyframes fadeInUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-/* Các CSS còn lại giữ nguyên */
+/* Các thành phần khác */
 h1 { font-family: 'Dancing Script', cursive; font-size: 3em; color: #d63384; margin-bottom: 0; }
 h2 { font-family: 'Dancing Script', cursive; font-size: 2.5em; color: #e85a9b; margin-bottom: 25px; }
 .message { font-size: 1.1em; line-height: 1.6; color: #333; margin-bottom: 15px; }
 .signature { font-family: 'Dancing Script', cursive; font-size: 1.8em; color: #d63384; margin-top: 30px; }
 #giftBox { background-color: #ff758f; color: white; padding: 10px 20px; border-radius: 25px; cursor: pointer; display: inline-block; margin-top: 20px; font-weight: bold; transition: transform 0.2s ease, background-color 0.2s ease; }
 #giftBox:hover { background-color: #ff4d6d; transform: scale(1.05); }
-#modalOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); display: none; justify-content: center; align-items: center; z-index: 100; }
+
+/* Hộp quà bí mật (Modal) */
+#modalOverlay { 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0, 0, 0, 0.6); 
+    display: none; 
+    justify-content: center; 
+    align-items: center; 
+    z-index: 200; /* Hộp quà phải có z-index cao nhất để hiện trên mọi thứ */
+}
 #giftModal { background: white; padding: 30px 40px; border-radius: 15px; max-width: 500px; text-align: center; position: relative; box-shadow: 0 5px 20px rgba(0,0,0,0.2); animation: zoomIn 0.5s ease-out; }
 #closeModal { position: absolute; top: 10px; right: 15px; font-size: 2em; color: #aaa; cursor: pointer; line-height: 1; }
 #closeModal:hover { color: #333; }
 .modal-signature { font-family: 'Dancing Script', cursive; font-size: 1.5em; color: #d63384; margin-top: 20px; }
 @keyframes zoomIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-#playMusicBtn { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background-color: rgba(255, 105, 180, 0.8); color: white; border: none; border-radius: 50%; font-size: 1.5em; cursor: pointer; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); z-index: 99; transition: background-color 0.3s, transform 0.3s; }
-#playMusicBtn:hover { background-color: rgba(214, 51, 132, 1); transform: scale(1.1); }
-.falling-flowers { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+
+/* Định dạng các phần tử rơi */
 .flower { position: absolute; top: -50px; font-size: 20px; color: white; user-select: none; animation: fall linear infinite; }
 .falling-kitty { position: absolute; top: -150px; height: auto; user-select: none; animation: fall linear infinite; transform-origin: center center; }
-@keyframes fall { from { transform: translateY(0) rotate(0); } to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
+
+/* Animation rơi */
+@keyframes fall {
+    from {
+        transform: translateY(0) rotate(0);
+    }
+    to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
