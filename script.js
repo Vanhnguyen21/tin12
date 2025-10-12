@@ -1,10 +1,32 @@
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.querySelector('.falling-flowers');
+    const music = document.getElementById('backgroundMusic');
+    const playBtn = document.getElementById('playMusicBtn');
+    
+    // --- MỚI: Xử lý màn hình mở đầu và bức thư ---
+    const introScreen = document.getElementById('introScreen');
+    const envelope = document.querySelector('.envelope');
+
+    envelope.addEventListener('click', () => {
+        // Thêm class 'open' để kích hoạt animation mở thư
+        envelope.classList.add('open');
+
+        // Bật nhạc
+        if (music.paused) {
+            music.play();
+            playBtn.innerHTML = '⏸️';
+        }
+
+        // Sau 2 giây, ẩn màn hình mở đầu đi
+        setTimeout(() => {
+            introScreen.classList.add('hidden');
+        }, 2000); 
+    });
+
 
     // --- Hiệu ứng hoa rơi ---
-    const numberOfFlowers = 50; // Giảm bớt hoa để không bị rối mắt
+    const numberOfFlowers = 50;
     const flowerTypes = ['🌹', '🌸', '❤️', '🌺', '❤️']; 
-
     for (let i = 0; i < numberOfFlowers; i++) {
         const flower = document.createElement('div');
         flower.classList.add('flower');
@@ -18,39 +40,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Hiệu ứng Hello Kitty rơi xuống ---
-    const numberOfKitties = 15; // Số lượng Hello Kitty bạn muốn rơi
-
+    const numberOfKitties = 15;
     for (let i = 0; i < numberOfKitties; i++) {
         const kitty = document.createElement('img');
-        kitty.src = 'hello-kitty.png'; // Đảm bảo bạn có ảnh này trong thư mục
+        kitty.src = 'hello-kitty.png';
         kitty.classList.add('falling-kitty');
-        
-        kitty.style.left = `${Math.random() * 95}vw`; // Vị trí ngang ngẫu nhiên
-        kitty.style.animationDuration = `${Math.random() * 8 + 10}s`; // Rơi chậm hơn hoa một chút (10-18s)
-        kitty.style.animationDelay = `${Math.random() * 10}s`; // Xuất hiện ngẫu nhiên
-        kitty.style.width = `${Math.random() * 30 + 20}px`; // Kích thước ngẫu nhiên (20px - 50px)
-        kitty.style.opacity = Math.random() * 0.5 + 0.5; // Độ trong suốt ngẫu nhiên
-        
+        kitty.style.left = `${Math.random() * 95}vw`;
+        kitty.style.animationDuration = `${Math.random() * 8 + 10}s`;
+        kitty.style.animationDelay = `${Math.random() * 10}s`;
+        kitty.style.width = `${Math.random() * 30 + 20}px`;
+        kitty.style.opacity = Math.random() * 0.5 + 0.5;
         container.appendChild(kitty);
     }
 
-
     // --- Xử lý nhạc nền ---
-    const music = document.getElementById('backgroundMusic');
-    const playBtn = document.getElementById('playMusicBtn');
-    
-    // Chỉnh âm lượng mặc định xuống 30%
     music.volume = 0.3;
     
-    // Bật nhạc khi người dùng tương tác lần đầu
-    document.body.addEventListener('click', () => {
-        if (music.paused) {
-            music.play();
-            playBtn.innerHTML = '⏸️';
-        }
-    }, { once: true });
-
-    // Xử lý nút bật/tắt nhạc
+    // Nút Play/Pause vẫn hoạt động bình thường sau khi nhạc đã bật
     playBtn.addEventListener('click', (event) => {
         event.stopPropagation();
         if (music.paused) {
@@ -66,15 +72,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const giftBox = document.getElementById('giftBox');
     const modalOverlay = document.getElementById('modalOverlay');
     const closeModalBtn = document.getElementById('closeModal');
-
     giftBox.addEventListener('click', () => {
         modalOverlay.style.display = 'flex';
     });
-
     const closeModal = () => {
         modalOverlay.style.display = 'none';
     }
-
     closeModalBtn.addEventListener('click', closeModal);
     modalOverlay.addEventListener('click', (event) => {
         if (event.target === modalOverlay) {
