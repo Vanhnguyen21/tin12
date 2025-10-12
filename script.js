@@ -1,30 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const container = document.querySelector('.falling-flowers');
     const music = document.getElementById('backgroundMusic');
-    const playBtn = document.getElementById('playMusicBtn');
     
-    // --- MỚI: Xử lý màn hình mở đầu và bức thư ---
+    // Xử lý chuyển cảnh từ thư sang thiệp
     const introScreen = document.getElementById('introScreen');
-    const envelope = document.querySelector('.envelope');
+    const envelopeWrapper = document.querySelector('.envelope-wrapper');
 
-    envelope.addEventListener('click', () => {
-        // Thêm class 'open' để kích hoạt animation mở thư
-        envelope.classList.add('open');
+    envelopeWrapper.addEventListener('click', () => {
+        introScreen.classList.add('opened');
 
-        // Bật nhạc
+        // Bật nhạc khi bấm vào thư
         if (music.paused) {
             music.play();
-            playBtn.innerHTML = '⏸️';
         }
-
-        // Sau 2 giây, ẩn màn hình mở đầu đi
-        setTimeout(() => {
-            introScreen.classList.add('hidden');
-        }, 2000); 
     });
 
-
-    // --- Hiệu ứng hoa rơi ---
+    // Hiệu ứng hoa và Hello Kitty rơi
+    const container = document.querySelector('.falling-flowers');
     const numberOfFlowers = 50;
     const flowerTypes = ['🌹', '🌸', '❤️', '🌺', '❤️']; 
     for (let i = 0; i < numberOfFlowers; i++) {
@@ -38,8 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
         flower.style.opacity = Math.random() * 0.7 + 0.3;
         container.appendChild(flower);
     }
-
-    // --- Hiệu ứng Hello Kitty rơi xuống ---
     const numberOfKitties = 15;
     for (let i = 0; i < numberOfKitties; i++) {
         const kitty = document.createElement('img');
@@ -53,22 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
         container.appendChild(kitty);
     }
 
-    // --- Xử lý nhạc nền ---
+    // Xử lý nhạc nền
     music.volume = 0.3;
-    
-    // Nút Play/Pause vẫn hoạt động bình thường sau khi nhạc đã bật
-    playBtn.addEventListener('click', (event) => {
-        event.stopPropagation();
-        if (music.paused) {
-            music.play();
-            playBtn.innerHTML = '⏸️';
-        } else {
-            music.pause();
-            playBtn.innerHTML = '▶️';
-        }
-    });
 
-    // --- Xử lý hộp quà bí mật ---
+    // Xử lý hộp quà bí mật
     const giftBox = document.getElementById('giftBox');
     const modalOverlay = document.getElementById('modalOverlay');
     const closeModalBtn = document.getElementById('closeModal');
